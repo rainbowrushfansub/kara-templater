@@ -38,6 +38,7 @@ And that's it! 🎉
 
 use RainbowRush\KaraTemplater\Core\KaraTemplater;
 use RainbowRush\KaraTemplater\Core\Transform;
+use RainbowRush\KaraTemplater\Enum\Mode;
 
 $karaTemplater = KaraTemplater::init('example');
 
@@ -45,14 +46,14 @@ $sfx = $karaTemplater->sfx('left to right syl effect');
 
 $sfx->template()
     ->syl()
-    ->retime('start2syl', '-300+(syl.i-1)*60')
+    ->retime(Mode::START2SYL, '-300+(syl.i-1)*60')
     ->an(5)
     ->pos(expr('orgline.center'), expr('orgline.middle'))
     ->fade(300, 0);
 
 $sfx->template()
     ->syl()
-    ->retime("syl")
+    ->retime(Mode::SYL)
     ->an(5)
     ->pos(expr('orgline.center'), expr('orgline.middle'))
     ->transform(function (Transform $transform) {
@@ -70,7 +71,7 @@ $sfx->template()
 
 $sfx->template()
     ->syl()
-    ->retime('end2syl', 0, '300-(#orgline.syls*60-syl.i*60)')
+    ->retime(Mode::SYL2END, 0, '300-(#orgline.syls*60-syl.i*60)')
     ->an(5)
     ->pos(expr('orgline.center'), expr('orgline.middle'))
     ->fade(0, 300);
