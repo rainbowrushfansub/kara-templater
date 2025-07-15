@@ -8,6 +8,10 @@ use LogicException;
 
 trait Taggable
 {
+    private ?int $a = null;
+
+    private ?int $an = null;
+
     private int|string|float|null $be = null;
 
     private int|string|float|null $bord = null;
@@ -89,6 +93,20 @@ trait Taggable
      * }[]
      */
     private array $fades = [];
+
+    public function a(int $value): self
+    {
+        $this->a = $value;
+
+        return $this;
+    }
+
+    public function an(int $value): self
+    {
+        $this->an = $value;
+
+        return $this;
+    }
 
     public function be(int|string|float $value): self
     {
@@ -316,6 +334,14 @@ trait Taggable
     public function buildTags(): string
     {
         $output = '';
+
+        if (null !== $this->a) {
+            $output .= '\\a'.$this->a;
+        }
+
+        if (null !== $this->an) {
+            $output .= '\\an'.$this->an;
+        }
 
         if (null !== $this->be) {
             $output .= '\\be'.$this->be;
