@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RainbowRush\KaraTemplater\Enum;
 
-enum Retime: string
+enum Mode: string
 {
     case PRELINE = 'preline';
 

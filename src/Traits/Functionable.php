@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace RainbowRush\KaraTemplater\Traits;
 
-use RainbowRush\KaraTemplater\Enum\Retime;
+use RainbowRush\KaraTemplater\Enum\Mode;
 
 trait Functionable
 {
@@ -23,7 +23,7 @@ trait Functionable
         return $this;
     }
 
-    public function retime(Retime $mode, int|float|string $startAdjustment = 0, int|float|string $endAdjustment = 0): self
+    public function retime(Mode $mode, int|float|string $startAdjustment = 0, int|float|string $endAdjustment = 0): self
     {
         $this->functions['retime_'.md5($mode->value)] = \sprintf('!retime("%s",%s,%s)!', $mode->value, $startAdjustment, $endAdjustment);
 
