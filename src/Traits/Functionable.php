@@ -57,4 +57,18 @@ trait Functionable
 
         return $this;
     }
+
+    public function position(int $a = 5, int $an = 5, int|float|string $xoffset = 0, float|string $yoffset = 0): self
+    {
+        $this->functions['pos_'.md5($a.$an.$xoffset.$yoffset)] = \sprintf('ln.tag.pos(%s, %s, %s, %s)', $a, $an, $xoffset, $yoffset);
+
+        return $this;
+    }
+
+    public function movement(int|string|float $xoff0 = 0, int|string|float $yoff0 = 0, int|string|float $xoff1 = 0, int|string|float $yoff1 = 0, int|string|float $time0 = 0, int|string|float $time1 = 0, int|string|float $a = 5, int|string|float $an = 5): self
+    {
+        $this->functions['move_'.md5($xoff0.$yoff0.$xoff1.$yoff1.$time0.$time1.$a.$an)] = \sprintf('ln.tag.move(%s, %s, %s, %s, %s, %s, %s, %s)', $xoff0, $yoff0, $xoff1, $yoff1, $time0, $time1, $a, $an);
+
+        return $this;
+    }
 }
