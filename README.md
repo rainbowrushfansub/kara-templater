@@ -2,8 +2,6 @@
 
 A simple PHP wrapper for [The0x539's KaraTemplater](https://github.com/The0x539/Aegisub-Scripts/blob/trunk/doc/0x.KaraTemplater.md), enabling you to write karaoke templates in **PHP** and export them as `.ass` subtitle files with ease.
 
----
-
 # 🤔 Why?
 
 I built this for one main reason: **to make my life easier**.
@@ -12,8 +10,6 @@ As someone who struggles with attention and focus, working directly in Aegisub's
 
 * Reuse and organize components more cleanly 🧼
 * Maintain complex effects in a scalable, readable way 🔁
-
----
 
 # ⚙️ How does it work?
 
@@ -34,8 +30,6 @@ As someone who struggles with attention and focus, working directly in Aegisub's
    ```
 
 And that's it! 🎉
-
----
 
 ## 🧪 Example
 
@@ -83,8 +77,6 @@ $sfx->template()
 
 return $karaTemplater;
 ```
-
----
 
 ## 🧾 Output (`.ass` file content)
 
