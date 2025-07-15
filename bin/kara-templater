@@ -1,0 +1,122 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use RainbowRush\KaraTemplater\Core\KaraTemplater;
+use RainbowRush\KaraTemplater\Core\TemplateWriter;
+
+exit(main($argv));
+
+function main(array $args): int
+{
+    if (!loadAutoloader()) {
+        printError('🔌 Composer autoloader not found.');
+
+        return 1;
+    }
+
+    array_shift($args);
+
+    if (count($args) < 2) {
+        printUsage();
+
+        return 1;
+    }
+
+    $projectRoot = getcwd();
+    $templateDir = realpath($projectRoot.'/'.$args[0]);
+    $outputDir = $projectRoot.'/'.rtrim($args[1], '/');
+    $baseDocPath = __DIR__.'/../fixtures/subtitle.ass';
+
+    if (false === $templateDir) {
+        printError("❌ Template directory not found or invalid: {$args[0]}");
+
+        return 1;
+    }
+
+    if (!is_file($baseDocPath)) {
+        printError("❌ Base subtitle file not found at {$baseDocPath}.");
+
+        return 1;
+    }
+
+    if (!is_dir($outputDir)) {
+        if (!mkdir($outputDir, 0775, true) && !is_dir($outputDir)) {
+            printError("📂 Failed to create output directory: {$outputDir}. Check permissions.");
+
+            return 1;
+        }
+    }
+
+    $templateFiles = glob($templateDir.'/*.php');
+
+    if (false === $templateFiles) {
+        printError("📂 Failed to read template directory: {$templateDir}");
+
+        return 1;
+    }
+
+    if (empty($templateFiles)) {
+        echo "⚠️ No template files found in {$templateDir}.\n";
+
+        return 0;
+    }
+
+    echo '🔍 Found '.count($templateFiles)." template(s).\n";
+
+    foreach ($templateFiles as $file) {
+        echo '📦 Loading template: '.basename($file)."\n";
+
+        $templater = require $file;
+
+        if (!$templater instanceof KaraTemplater) {
+            printError('File ['.basename($file).'] did not return a KaraTemplater instance.');
+            continue;
+        }
+
+        try {
+            $writer = new TemplateWriter($outputDir, $baseDocPath);
+            $fileInfo = $writer->write($templater);
+            echo "✅ Generated: {$fileInfo->getRealPath()}\n";
+        } catch (Exception $exception) {
+            printError('🔥 Failed to generate file for template ['.basename($file).']: '.$exception->getMessage());
+        }
+    }
+
+    return 0;
+}
+
+function printError(string $message): void
+{
+    file_put_contents('php://stderr', "❌ Error: $message\n");
+}
+
+function printUsage(): void
+{
+    echo <<<USAGE
+ℹ️ Usage: kara-templater <template-dir> <output-dir>
+
+Example:
+  vendor/bin/kara-templater templates/ output/
+
+USAGE;
+}
+
+function loadAutoloader(): bool
+{
+    $paths = [
+        dirname(__DIR__, 4).'/vendor/autoload.php',
+        dirname(__DIR__).'/vendor/autoload.php',
+    ];
+
+    foreach ($paths as $path) {
+        if (file_exists($path)) {
+            include_once $path;
+
+            return true;
+        }
+    }
+
+    return false;
+}

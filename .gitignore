@@ -1,0 +1,7 @@
+# This file excludes specific files from version control in Git.
+
+vendor
+composer.lock
+.php-cs-fixer.cache
+.phpunit.result.cache
+output
